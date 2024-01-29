@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Copy File') {
+            steps {
+                script {
+                    // Copy a new file to a destination directory
+                    def sourceFile = 'path/to/source/file.txt'
+                    def destinationDir = 'path/to/destination/directory/'
+                    sh "cp ${sourceFile} ${destinationDir}"
+                }
+            }
+        }
+
+        stage('Modify File') {
+            steps {
+                script {
+                    // Define the file path
+                    def filePath = 'path/to/destination/directory/file.txt'
+
+                    // Read the file content
+                    def fileContent = readFile(filePath).trim()
+
+                    // Make changes to the file content
+                    fileContent = fileContent.replaceAll('old_text', 'new_text')
+                    
+                    // Write the modified content back to the file
+                    writeFile(file: filePath, text: fileContent)
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Your build steps here
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Your deployment steps here
+            }
+        }
+    }
+}
